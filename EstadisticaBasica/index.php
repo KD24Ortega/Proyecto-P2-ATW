@@ -8,6 +8,7 @@ $estad      = new EstadisticaBasica();
 $dataSets   = &$_SESSION['dataSets'];
 $message    = '';
 $singleStat = null;
+$singleId   = null;
 $fullReport = null;
 
 // Inicializar si no existe
@@ -40,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $message = "El conjunto «<strong>" . htmlspecialchars($id) . "</strong>» no existe.";
             } else {
                 $singleStat = $estad->generarInforme([$id => $dataSets[$id]])[$id];
+                $singleId   = $id;
             }
             break;
 
@@ -113,9 +115,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     </div>
 
     <!-- Resultado de un solo conjunto -->
-    <?php if (is_array($singleStat)): ?>
+    <?php if (is_array($singleStat) && $singleId !== null): ?>
         <div class="well">
-            <h4>Resultados para «<?= htmlspecialchars(array_key_first([$singleStat])) ?>»</h4>
+           <h4>Resultados para «<?= htmlspecialchars($singleId, ENT_QUOTES, 'UTF-8') ?>»</h4>
+            <p><strong>Valores:</strong> <?= implode(', ', $dataSets[$singleId]) ?></p>
             <p><strong>Media:</strong>   <?= $singleStat['media']   ?? '—' ?></p>
             <p><strong>Mediana:</strong> <?= $singleStat['mediana'] ?? '—' ?></p>
             <p><strong>Moda:</strong>
@@ -142,6 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             <thead>
                 <tr>
                     <th>Conjunto</th>
+                    <th>Valores</th>
                     <th>Media</th>
                     <th>Mediana</th>
                     <th>Moda</th>
@@ -151,6 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 <?php foreach ($fullReport as $id => $s): ?>
                     <tr>
                         <td><?= htmlspecialchars($id) ?></td>
+                        <td><?= implode(', ', $dataSets[$id]) ?></td>
                         <td><?= $s['media']   ?? '—' ?></td>
                         <td><?= $s['mediana'] ?? '—' ?></td>
                         <td><?= empty($s['moda']) ? '—' : implode(', ', $s['moda']) ?></td>
