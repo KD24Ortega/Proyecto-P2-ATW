@@ -27,7 +27,10 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Inicio</a>
+      <a class="navbar-brand" href="#">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-top me-2">
+        Inicio
+      </a>
     </div>
   </nav>
 
